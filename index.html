@@ -2,12 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
+    <script type="module" src="./src/main.ts"></script>
+    <script type="module" src="./src/getpopulation.ts"></script>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div class="container">
+      <div id="map"></div>
+      <div id="sidebar">
+          <h3 style="flex-grow: 0">Request</h3>
+          <pre style="flex-grow: 1" id="request"></pre>
+          <h3 style="flex-grow: 0">Response</h3>
+          <pre style="flex-grow: 1" id="response"></pre>
+          <h3 style="flex-grow: 0">Result (徒歩)</h3>
+          <pre style="flex-grow: 1" id="result"></pre>
+          <h3 style="flex-grow: 0">Result (取得結果)</h3>
+          <pre style="flex-grow: 1" id="result2"></pre>
+      </div>
+    </div>
+
+    <script id="map-api-key__src"
+    src="https://maps.googleapis.com/maps/api/js?key=%VITE_GOOGLE_MAPS_API_KEY%&callback=initMap&v=weekly"
+    defer></script>
   </body>
 </html>

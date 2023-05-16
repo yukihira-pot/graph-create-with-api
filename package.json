@@ -9,7 +9,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.53.1",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
-  }
+  },
+  "keywords": [
+    "google"
+  ]
 }
