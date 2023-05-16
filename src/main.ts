@@ -1,6 +1,7 @@
 import './style.css'
+import { chooseCities } from "./getpopulation";
 
-function initMap(): void {
+async function initMap(): Promise<void> {
   const bounds = new google.maps.LatLngBounds();
   const markersArray: google.maps.Marker[] = [];
 
@@ -16,32 +17,27 @@ function initMap(): void {
   const geocoder = new google.maps.Geocoder();
   const service = new google.maps.DistanceMatrixService();
 
-  // build request
-  const origin1 = "Sanjo station, Kyoto";
-  const origin2 = "広島県広島市西区古江上２丁目５０２−７";
-  const origin3 = "大阪府枚方市田宮本町8-55";
-  const destinationA = "Hyakumanben, Kyoto";
-  const destinationB = "Abeno, Japan";
+  const chosenCities = await chooseCities(48, 49, 2, 3, 10);
+  console.log("chosenCities", chosenCities, chosenCities.length);
+  var originArray = [];
+  for (let i = 0; i < chosenCities.length; i++) {
+    const [name, longitude, latitude] = chosenCities[i];
+    console.log(name, longitude, latitude);
+    const origin = { lat: latitude, lng: longitude };
+    originArray.push(origin);
+  }
 
   const request = {
-    origins: [origin1, origin2, origin3],
-    destinations: [destinationA, destinationB],
+    origins: originArray,
+    destinations: [originArray[0], originArray[1]],
     travelMode: google.maps.TravelMode.WALKING,
     unitSystem: google.maps.UnitSystem.METRIC,
     avoidHighways: false,
     avoidTolls: false,
   };
 
-  // put request on page
-  // (document.getElementById("request") as HTMLDivElement).innerText =
-    // JSON.stringify(request, null, 2);
-
   // get distance matrix response
   service.getDistanceMatrix(request).then((response) => {
-    // put response
-    // (document.getElementById("response") as HTMLDivElement).innerText =
-    //     JSON.stringify(response, null, 2);
-
     // show on map
     const originList = response.originAddresses;
     const destinationList = response.destinationAddresses;
@@ -66,7 +62,8 @@ function initMap(): void {
     var resultList = []
     for (let i = 0; i < originList.length; i++) {
       const results = response.rows[i].elements;
-
+      console.log("results", results);
+      
       geocoder
         .geocode({ address: originList[i] })
         .then(showGeocodedAddressOnMap(false));
